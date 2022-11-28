@@ -18,8 +18,8 @@ export default function Main() {
     return (
         <>
             <h1>Hello world</h1>
-            <h2>{inputValue.value}</h2>
-            <input value={inputValue.value} onChange={onChangeInputPage} />
+            <h2>{inputValue}</h2>
+            <input value={inputValue} onChange={onChangeInputPage} />
         </>
     )
 }

@@ -44,21 +44,21 @@ export const nativeOnInitJob =
 
         return {
             reload,
-            data: {
-                value: dataState.state,
-                subscribe: dataState.subscribe,
+            get data(): Optional<T> {
+                return dataState.state
             },
-            error: {
-                value: errorState.state,
-                subscribe: errorState.subscribe,
+            subscribeData: dataState.subscribe,
+            get error(): Optional<Error> {
+                return errorState.state
             },
-            isLoading: {
-                value: loadingState.state,
-                subscribe: loadingState.subscribe,
+            subscribeError: errorState.subscribe,
+            get isLoading(): boolean {
+                return loadingState.state
             },
-            isReloading: {
-                value: reloadingState.state,
-                subscribe: reloadingState.subscribe,
+            subscribeLoading: loadingState.subscribe,
+            get isReloading(): boolean {
+                return reloadingState.state
             },
+            subscribeIsReloading: reloadingState.subscribe,
         }
     }

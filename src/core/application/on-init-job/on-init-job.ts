@@ -1,16 +1,17 @@
 import { Optional } from '../../../utils/optional/optional'
 import { StateProvider } from '../state/state-provider'
 
-export type ObservableData<T> = {
-    value: T
-    subscribe(callback: (value: T) => void): void
-}
+export type Subscribe<T> = (callback: (value: T) => void) => void
 
 export type JobState<T> = {
-    data: ObservableData<Optional<T>>
-    isLoading: ObservableData<boolean>
-    error: ObservableData<Optional<Error>>
-    isReloading: ObservableData<boolean>
+    get data(): Optional<T>
+    subscribeData: Subscribe<Optional<T>>
+    get isLoading(): boolean
+    subscribeLoading: Subscribe<boolean>
+    get error(): Optional<Error>
+    subscribeError: Subscribe<Optional<Error>>
+    get isReloading(): boolean
+    subscribeIsReloading: Subscribe<boolean>
     reload: () => void
 }
 

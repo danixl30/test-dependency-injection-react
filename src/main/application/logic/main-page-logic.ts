@@ -22,9 +22,9 @@ export const mainPageLogic = (
 
     return {
         onChangeInput,
-        inputValue: {
-            value: inputState.state,
-            subscribe: inputState.subscribe,
+        get inputValue() {
+            return inputState.state
         },
+        subscribeChangeInput: inputState.subscribe,
     }
 }
