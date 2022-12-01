@@ -16,6 +16,7 @@ export const nativeOnInitJob =
         const errorState = stateFactory<Optional<Error>>(null)
 
         const doJob = async (...args: ArgumentTypes<U>) => {
+            if (loadingState.state) throw new Error('Is in job')
             dataState.setState(null)
             errorState.setState(null)
             loadingState.setState(true)

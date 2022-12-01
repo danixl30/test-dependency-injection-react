@@ -36,6 +36,8 @@ export const nativeOnInitJob =
         })
 
         const reload = () => {
+            if (reloadingState.state || loadingState.state)
+                throw new Error('Is in job')
             reloadingState.setState(true)
             job()
         }
