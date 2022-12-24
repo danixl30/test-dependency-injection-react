@@ -19,6 +19,7 @@ export const usePaginationManager =
         const dataState = stateFactory<T[]>([])
         const errorState = stateFactory<Optional<Error>>(null)
         const loadingState = stateFactory<boolean>(false)
+        const isTopState = stateFactory(false)
 
         const job = async () => {
             if (loadingState.state) return
@@ -26,6 +27,7 @@ export const usePaginationManager =
             errorState.setState(null)
             try {
                 const data = await callback(pageState.state)
+                if (data.length === 0) isTopState.setState(true)
                 dataState.setState(dataTransform(data, dataState.state))
             } catch (e) {
                 errorState.setState(e as Error)
@@ -44,15 +46,18 @@ export const usePaginationManager =
         const increment = () => pageState.setState(pageState.state + 1)
 
         const reset = () => {
+            isTopState.setState(false)
             dataState.setState([])
             pageState.setState(1)
         }
 
         const previousPage = () => {
+            isTopState.setState(false)
             if (pageState.state > 2) pageState.setState(pageState.state - 1)
         }
 
         const setPage = (page: number) => {
+            isTopState.setState(false)
             if (page < 1 || Math.ceil(page) !== page)
                 throw new Error('Invalid page')
             pageState.setState(page)
@@ -79,5 +84,9 @@ export const usePaginationManager =
             subscribePage: pageState.subscribe,
             previousPage,
             setPage,
+            get isTop() {
+                return isTopState.state
+            },
+            subscribeIsTop: isTopState.subscribe,
         }
     }

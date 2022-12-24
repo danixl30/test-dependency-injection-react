@@ -14,4 +14,6 @@ export type PaginationResult<T> = {
     increment(): void
     previousPage(): void
     setPage(page: number): void
+    get isTop(): boolean
+    subscribeIsTop: Subscribe<boolean>
 }
