@@ -48,6 +48,16 @@ export const usePaginationManager =
             pageState.setState(1)
         }
 
+        const previousPage = () => {
+            if (pageState.state > 2) pageState.setState(pageState.state - 1)
+        }
+
+        const setPage = (page: number) => {
+            if (page < 1 || Math.ceil(page) !== page)
+                throw new Error('Invalid page')
+            pageState.setState(page)
+        }
+
         return {
             get data(): T[] {
                 return dataState.state
@@ -67,5 +77,7 @@ export const usePaginationManager =
                 return pageState.state
             },
             subscribePage: pageState.subscribe,
+            previousPage,
+            setPage,
         }
     }

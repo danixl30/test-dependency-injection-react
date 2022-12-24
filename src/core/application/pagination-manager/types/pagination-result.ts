@@ -1,14 +1,17 @@
 import { Optional } from '../../../../utils/optional/optional'
+import { Subscribe } from '../../on-init-job/on-init-job'
 
 export type PaginationResult<T> = {
     get data(): T[]
-    subscribeData(callback: (data: T[]) => void): void
+    subscribeData: Subscribe<T[]>
     get error(): Optional<Error>
-    subscribeError(callback: (e: Optional<Error>) => void): void
+    subscribeError: Subscribe<Optional<Error>>
     get isLoading(): boolean
-    subscribeIsLoading(callback: (loa: boolean) => void): void
+    subscribeIsLoading: Subscribe<boolean>
     get page(): number
-    subscribePage(callback: (page: number) => void): void
+    subscribePage: Subscribe<number>
     reset(): void
     increment(): void
+    previousPage(): void
+    setPage(page: number): void
 }
