@@ -26,9 +26,9 @@ export const usePaginationManager =
             loadingState.setState(true)
             errorState.setState(null)
             try {
-                const data = await callback(pageState.state)
+                const data = await callback(pageState.state.value)
                 if (data.length === 0) isTopState.setState(true)
-                dataState.setState(dataTransform(data, dataState.state))
+                dataState.setState(dataTransform(data, dataState.state.value))
             } catch (e) {
                 errorState.setState(e as Error)
             }
@@ -41,9 +41,9 @@ export const usePaginationManager =
 
         stateObserver(() => {
             job()
-        }, pageState)
+        }, pageState.state)
 
-        const increment = () => pageState.setState(pageState.state + 1)
+        const increment = () => pageState.setState(pageState.state.value + 1)
 
         const reset = () => {
             isTopState.setState(false)
@@ -53,7 +53,8 @@ export const usePaginationManager =
 
         const previousPage = () => {
             isTopState.setState(false)
-            if (pageState.state > 2) pageState.setState(pageState.state - 1)
+            if (pageState.state.value > 2)
+                pageState.setState(pageState.state.value - 1)
         }
 
         const setPage = (page: number) => {
@@ -64,29 +65,14 @@ export const usePaginationManager =
         }
 
         return {
-            get data(): T[] {
-                return dataState.state
-            },
-            subscribeData: dataState.subscribe,
-            get error(): Optional<Error> {
-                return errorState.state
-            },
-            subscribeError: errorState.subscribe,
-            get isLoading(): boolean {
-                return loadingState.state
-            },
-            subscribeIsLoading: loadingState.subscribe,
+            data: dataState.state,
+            error: errorState.state,
+            isLoading: loadingState.state,
             increment,
             reset,
-            get page(): number {
-                return pageState.state
-            },
-            subscribePage: pageState.subscribe,
+            page: pageState.state,
             previousPage,
             setPage,
-            get isTop() {
-                return isTopState.state
-            },
-            subscribeIsTop: isTopState.subscribe,
+            isTop: isTopState.state,
         }
     }

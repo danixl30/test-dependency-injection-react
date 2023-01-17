@@ -3,7 +3,7 @@ import { OnInitJob } from '../../application/on-init-job/on-init-job'
 import { OnInit } from '../../application/on-init/on-init'
 import { StateObserver } from '../../application/state-observers/state-observer'
 import { StateFactory } from '../../application/state/state-factory'
-import { StateProvider } from '../../application/state/state-provider'
+import { StateViewer } from '../../application/state/state-provider'
 
 export const nativeOnInitJob =
     (
@@ -11,7 +11,7 @@ export const nativeOnInitJob =
         stateObserver: StateObserver,
         onInit: OnInit,
     ): OnInitJob =>
-    <T, U>(callback: () => Promise<T>, ...args: StateProvider<U>[]) => {
+    <T, U>(callback: () => Promise<T>, ...args: StateViewer<U>[]) => {
         const dataState = stateFactory<Optional<T>>(null)
         const loadingState = stateFactory(false)
         const errorState = stateFactory<Optional<Error>>(null)
@@ -36,7 +36,7 @@ export const nativeOnInitJob =
         })
 
         const reload = () => {
-            if (reloadingState.state || loadingState.state)
+            if (reloadingState.state.value || loadingState.state.value)
                 throw new Error('Is in job')
             reloadingState.setState(true)
             job()
@@ -46,21 +46,9 @@ export const nativeOnInitJob =
 
         return {
             reload,
-            get data(): Optional<T> {
-                return dataState.state
-            },
-            subscribeData: dataState.subscribe,
-            get error(): Optional<Error> {
-                return errorState.state
-            },
-            subscribeError: errorState.subscribe,
-            get isLoading(): boolean {
-                return loadingState.state
-            },
-            subscribeLoading: loadingState.subscribe,
-            get isReloading(): boolean {
-                return reloadingState.state
-            },
-            subscribeIsReloading: reloadingState.subscribe,
+            data: dataState.state,
+            error: errorState.state,
+            isLoading: loadingState.state,
+            isReloading: reloadingState.state,
         }
     }

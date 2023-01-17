@@ -8,14 +8,16 @@ export const cancelHandler = (
 ): CancelHandler => {
     const cancelState = stateFactory<(() => void)[]>([])
 
-    onInit(() => () => cancelState.state.forEach((e) => e()))
+    onInit(() => () => cancelState.state.value.forEach((e) => e()))
 
     return {
         subscribeCancel(cancel: () => void) {
-            cancelState.setState([...cancelState.state, cancel])
+            cancelState.setState([...cancelState.state.value, cancel])
         },
         unsubscribeCancel(cancel: () => void) {
-            cancelState.setState(cancelState.state.filter((e) => e !== cancel))
+            cancelState.setState(
+                cancelState.state.value.filter((e) => e !== cancel),
+            )
         },
     }
 }

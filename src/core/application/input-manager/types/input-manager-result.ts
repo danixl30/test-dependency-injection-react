@@ -1,9 +1,7 @@
-import { Subscribe } from '../../on-init-job/on-init-job'
+import { StateViewer } from '../../state/state-provider'
 
 export type InputManagerResult<T> = {
-    get value(): T
-    subscribeValue: Subscribe<T>
+    value: StateViewer<T>
+    error: StateViewer<string>
     onChange(data: T): void
-    get error(): string
-    subscribeError: Subscribe<string>
 }

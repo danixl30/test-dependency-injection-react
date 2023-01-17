@@ -1,5 +1,9 @@
-export type StateProvider<T> = {
-    get state(): T
-    setState(value: T): void
+export type StateViewer<T> = {
+    get value(): T
     subscribe(subs: (state: T) => void): void
+}
+
+export type StateProvider<T> = {
+    state: StateViewer<T>
+    setState(value: T): void
 }

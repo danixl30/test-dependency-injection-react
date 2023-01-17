@@ -1,14 +1,11 @@
 import { ArgumentTypes } from '../../../../utils/argument-types/argument.type'
 import { Optional } from '../../../../utils/optional/optional'
-import { Subscribe } from '../on-init-job'
+import { StateViewer } from '../../state/state-provider'
 
 export type JobStateLazy<T, U extends Function> = {
-    get data(): Optional<T>
-    subscribeData: Subscribe<Optional<T>>
-    get isLoading(): boolean
-    subscribeLoading: Subscribe<boolean>
-    get error(): Optional<Error>
-    subscribeError: Subscribe<Optional<Error>>
+    data: StateViewer<Optional<T>>
+    error: StateViewer<Optional<Error>>
+    isLoading: StateViewer<boolean>
     do: (...args: ArgumentTypes<U>) => Promise<T>
 }
 

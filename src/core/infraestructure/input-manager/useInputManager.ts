@@ -18,14 +18,8 @@ export const useInputManager =
         }
 
         return {
-            get value() {
-                return inputState.state
-            },
-            subscribeValue: inputState.subscribe,
-            get error() {
-                return errorState.state
-            },
-            subscribeError: errorState.subscribe,
+            value: inputState.state,
+            error: errorState.state,
             onChange,
         }
     }

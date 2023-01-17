@@ -34,17 +34,8 @@ export const nativeOnInitJob =
 
         return {
             do: doJob,
-            get data(): Optional<T> {
-                return dataState.state
-            },
-            subscribeData: dataState.subscribe,
-            get error(): Optional<Error> {
-                return errorState.state
-            },
-            subscribeError: errorState.subscribe,
-            get isLoading(): boolean {
-                return loadingState.state
-            },
-            subscribeLoading: loadingState.subscribe,
+            data: dataState.state,
+            error: errorState.state,
+            isLoading: loadingState.state,
         }
     }

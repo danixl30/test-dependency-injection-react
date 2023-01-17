@@ -1,6 +1,6 @@
-import { StateProvider } from '../state/state-provider'
+import { StateViewer } from '../state/state-provider'
 
 export type StateObserver = <T>(
     callback: () => (() => void) | void,
-    ...states: StateProvider<T>[]
+    ...states: StateViewer<T>[]
 ) => void

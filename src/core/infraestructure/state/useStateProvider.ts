@@ -8,11 +8,13 @@ export const useStateFactory = <T>(initialize: T): StateProvider<T> => {
     useEffect(() => subcriptors.forEach((e) => e(state)), [state])
 
     return {
-        get state(): T {
-            return state
-        },
-        subscribe(callback: (value: T) => void) {
-            setSubscriptors([...subcriptors, callback])
+        state: {
+            get value() {
+                return state
+            },
+            subscribe(callback: (value: T) => void) {
+                setSubscriptors([...subcriptors, callback])
+            },
         },
         setState(value: T) {
             setState(value)
