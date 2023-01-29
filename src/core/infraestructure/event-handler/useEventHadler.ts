@@ -12,22 +12,29 @@ export const useEventHadler = (stateFactory: StateFactory): EventHandler => {
         callback: (event: T) => void,
     ) => {
         const callbacks = [
-            ...(callbacksState.state[event] || []),
+            ...(callbacksState.state.value[event] || []),
             callback as (event: EventBase) => void,
         ]
-        callbacksState.setState({ ...callbacksState.state, [event]: callbacks })
+        callbacksState.setState({
+            ...callbacksState.state.value,
+            [event]: callbacks,
+        })
         return () => {
             const callbacks =
-                callbacksState.state[event]?.filter((e) => e !== callback) || []
+                callbacksState.state.value[event]?.filter(
+                    (e) => e !== callback,
+                ) || []
             callbacksState.setState({
-                ...callbacksState.state,
+                ...callbacksState.state.value,
                 event: callbacks,
             })
         }
     }
 
     const publish = (event: EventBase) => {
-        callbacksState.state[event.name]?.forEach((callback) => callback(event))
+        callbacksState.state.value[event.name]?.forEach((callback) =>
+            callback(event),
+        )
     }
 
     return {

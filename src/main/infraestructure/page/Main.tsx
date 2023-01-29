@@ -47,7 +47,7 @@ export default function Main() {
             <h2>{inputValue.value}</h2>
             {errorInput.value && (
                 <>
-                    <h3>errorInput.value</h3>
+                    <h3>{errorInput.value}</h3>
                 </>
             )}
             <input value={inputValue.value} onChange={onChangeInputPage} />
