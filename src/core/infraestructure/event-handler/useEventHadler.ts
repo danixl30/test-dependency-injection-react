@@ -1,9 +1,9 @@
 import { EventHandler } from '../../application/event-handler/event-handler'
 import { EventBase } from '../../application/event-handler/types/event'
-import { StateFactory } from '../../application/state/state-factory'
+import { ValueProvider } from '../../application/value-provider/value-provider'
 
-export const useEventHadler = (stateFactory: StateFactory): EventHandler => {
-    const callbacksState = stateFactory<{
+export const useEventHadler = (valueFactory: ValueProvider): EventHandler => {
+    const callbacksState = valueFactory<{
         [eventName: string]: ((event: EventBase) => void)[]
     }>({})
 
@@ -12,29 +12,25 @@ export const useEventHadler = (stateFactory: StateFactory): EventHandler => {
         callback: (event: T) => void,
     ) => {
         const callbacks = [
-            ...(callbacksState.state.value[event] || []),
+            ...(callbacksState.value[event] || []),
             callback as (event: EventBase) => void,
         ]
-        callbacksState.setState({
-            ...callbacksState.state.value,
+        callbacksState.value = {
+            ...callbacksState.value,
             [event]: callbacks,
-        })
+        }
         return () => {
             const callbacks =
-                callbacksState.state.value[event]?.filter(
-                    (e) => e !== callback,
-                ) || []
-            callbacksState.setState({
-                ...callbacksState.state.value,
+                callbacksState.value[event]?.filter((e) => e !== callback) || []
+            callbacksState.value = {
+                ...callbacksState.value,
                 event: callbacks,
-            })
+            }
         }
     }
 
     const publish = (event: EventBase) => {
-        callbacksState.state.value[event.name]?.forEach((callback) =>
-            callback(event),
-        )
+        callbacksState.value[event.name]?.forEach((callback) => callback(event))
     }
 
     return {

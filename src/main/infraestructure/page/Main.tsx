@@ -8,6 +8,7 @@ import { nativeOnInitJob } from '../../../core/infraestructure/on-init-job/nativ
 import { useEffectOnInit } from '../../../core/infraestructure/on-init/useEffectOnInit'
 import { useEffectStateObserver } from '../../../core/infraestructure/state-observer/useEffectStateObserver'
 import { useStateFactory } from '../../../core/infraestructure/state/useStateProvider'
+import { useRefValueProvider } from '../../../core/infraestructure/value-provider/useRefValueProvider'
 import { getPostsJSONPlaceHolder } from '../../../post/infraestructure/services/get-posts/getPosts'
 import { mainPageLogic } from '../../application/logic/main-page-logic'
 
@@ -31,7 +32,7 @@ export default function Main() {
         ),
         getPostsJSONPlaceHolder(
             useAxiosHttp('https://my-json-server.typicode.com/'),
-            cancelHandler(useStateFactory, useEffectOnInit),
+            cancelHandler(useRefValueProvider(), useEffectOnInit),
         ),
         useInputManager(useStateFactory),
         getEventContext(),
