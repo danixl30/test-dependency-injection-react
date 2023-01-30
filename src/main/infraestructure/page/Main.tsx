@@ -10,7 +10,8 @@ import { useEffectOnInit } from '../../../core/infraestructure/on-init/useEffect
 import { useEffectStateObserver } from '../../../core/infraestructure/state-observer/useEffectStateObserver'
 import { useStateFactory } from '../../../core/infraestructure/state/useStateProvider'
 import { useRefValueProvider } from '../../../core/infraestructure/value-provider/useRefValueProvider'
-import { getPostsJSONPlaceHolder } from '../../../post/infraestructure/services/get-posts/getPosts'
+import { getPostService } from '../../../post/application/services/get-posts/get-post-service'
+import { getPostsRepositoryJSONPlaceHolder } from '../../../post/infraestructure/repositories/getPostsRepositoryJSONPlaceHolder'
 import { mainPageLogic } from '../../application/logic/main-page-logic'
 
 export default function Main() {
@@ -31,9 +32,11 @@ export default function Main() {
             useEffectStateObserver,
             useEffectOnInit,
         ),
-        getPostsJSONPlaceHolder(
-            useAxiosHttp('https://my-json-server.typicode.com/'),
-            cancelHandler(useRefValueProvider(), useEffectOnInit),
+        getPostService(
+            getPostsRepositoryJSONPlaceHolder(
+                useAxiosHttp('https://my-json-server.typicode.com/'),
+                cancelHandler(useRefValueProvider(), useEffectOnInit),
+            ),
         ),
         useInputManager(useStateFactory),
         getEventContext(),

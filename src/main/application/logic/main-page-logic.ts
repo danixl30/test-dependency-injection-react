@@ -3,9 +3,10 @@ import { EventListener } from '../../../core/application/event-handler/listener/
 import { InitLayout } from '../../../core/application/init-layout/init-layout'
 import { InputManager } from '../../../core/application/input-manager/input-manager'
 import { OnInitJob } from '../../../core/application/on-init-job/on-init-job'
+import { ApplicationService } from '../../../core/application/service/application-service'
 import { StateObserver } from '../../../core/application/state-observers/state-observer'
 import { StateFactory } from '../../../core/application/state/state-factory'
-import { GetPostService } from '../../../post/application/services/get-posts/get-post-service'
+import { Post } from '../../../post/application/types/post'
 import {
     MainInputChange,
     mainInputChangeEventFactory,
@@ -17,12 +18,14 @@ export const mainPageLogic = (
     initLayout: InitLayout,
     stateObserver: StateObserver,
     initJobFactory: OnInitJob,
-    getPosts: GetPostService,
+    getPosts: ApplicationService<unknown, Post[]>,
     inputManager: InputManager,
     eventHandler: EventHandler,
     eventListenerFactory: EventListener,
 ) => {
-    const postJob = initJobFactory(async () => await getPosts.execute())
+    const postJob = initJobFactory(
+        async () => await getPosts.execute(undefined),
+    )
     const onEventState = stateFactory('')
 
     const inputState = inputManager(
@@ -38,6 +41,7 @@ export const mainPageLogic = (
         console.log('from event: ', event.text)
         onEventState.setState(event.text)
     })
+
     initLayout(() => console.log('hello 2'))
 
     stateObserver(
