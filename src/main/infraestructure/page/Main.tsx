@@ -1,5 +1,6 @@
 import { ChangeEvent } from 'react'
 import { getEventContext } from '../../../core/infraestructure/event-handler/context/EventProvider'
+import { eventListenerFactory } from '../../../core/infraestructure/event-handler/listener/event-listener-factory'
 import { useAxiosHttp } from '../../../core/infraestructure/http/axios/useAxiosHttpHandler'
 import { cancelHandler } from '../../../core/infraestructure/http/cancel-handler/cancelHandler'
 import { useLayoutEffectInitLayout } from '../../../core/infraestructure/initLayout/useLayoutEffectOnInit'
@@ -20,10 +21,10 @@ export default function Main() {
         isLoadingPosts,
         errorPosts,
         errorInput,
+        eventState,
     } = mainPageLogic(
-        useEffectOnInit,
-        useLayoutEffectInitLayout,
         useStateFactory,
+        useLayoutEffectInitLayout,
         useEffectStateObserver,
         nativeOnInitJob(
             useStateFactory,
@@ -36,6 +37,7 @@ export default function Main() {
         ),
         useInputManager(useStateFactory),
         getEventContext(),
+        eventListenerFactory(useEffectOnInit, getEventContext()),
     )
 
     const onChangeInputPage = (e: ChangeEvent<HTMLInputElement>) =>
@@ -52,6 +54,7 @@ export default function Main() {
                 </>
             )}
             <input value={inputValue.value} onChange={onChangeInputPage} />
+            <p>{eventState.value}</p>
             {posts.value?.map((e) => (
                 <div key={e.id}>{e.title}</div>
             ))}

@@ -1,11 +1,11 @@
-import Main from '../../../main/infraestructure/page/Main'
+import MainWrapper from '../../../main/infraestructure/page/MainWrapper'
 import { EventProvider } from '../event-handler/context/EventProvider'
 
 export default function App() {
     return (
         <>
             <EventProvider>
-                <Main />
+                <MainWrapper />
             </EventProvider>
         </>
     )

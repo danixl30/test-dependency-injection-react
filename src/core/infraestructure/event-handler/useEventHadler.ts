@@ -24,7 +24,7 @@ export const useEventHadler = (valueFactory: ValueProvider): EventHandler => {
                 callbacksState.value[event]?.filter((e) => e !== callback) || []
             callbacksState.value = {
                 ...callbacksState.value,
-                event: callbacks,
+                [event]: callbacks,
             }
         }
     }
